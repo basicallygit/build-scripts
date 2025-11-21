@@ -6,9 +6,6 @@ mkdir $1-binaries
 
 cd $1
 
-# Build binary from makefile
-make
-
 binary_path=""
 
 # Assume binary is ./PROJECT_NAME, ./bin/PROJECT_NAME or ./out/PROJECT_NAME
@@ -23,7 +20,15 @@ else
     exit
 fi
 
+# Build binary from makefile
+make
+
 mv $binary_path ../$1-binaries/
+
+# Build static binary
+make CFLAGS= -static
+
+mv $binary_path ../$1-binaries/$binary_path-static
 
 # Strip the binary
 strip ../$1-binaries/$1
